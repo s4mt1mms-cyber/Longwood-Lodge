@@ -412,7 +412,7 @@ body{overflow:hidden;height:100vh;height:100svh;font-family:var(--body)}
   function layout(){ dpr = Math.min(window.devicePixelRatio || 1, 2); buildForest(); buildStars(); sizeSnow(); updateCue(); }
 
   // ---------- flow ----------
-  var GUESTS = ['Sam Timms', 'Zach Hamilton', 'Saul Valencia', 'Harry Skordos', 'Kai Ishimi', 'George Faranas', 'Travis Fernamberg', 'Jamie Rennie', 'Stephen Matulis'];
+  var GUESTS = ['Sam Timms', 'Zach Hamilton', 'Saul Valencia', 'Harry Skordos', 'Kai Ishimi', 'George Fanaras', 'Travis Fernamberg', 'Jamie Rennie', 'Stephen Matulis'];
   function clean(n){ return (n||'').replace(/[-_+]/g,' ').replace(/\s+/g,' ').trim().slice(0,30); }
   function allowed(n){ n = n.toLowerCase(); return GUESTS.some(function(g){ return clean(g).toLowerCase() === n; }); }
   function show(id){ ['screen-gate','screen-env','screen-card'].forEach(function(s){ document.getElementById(s).classList.toggle('off', s !== id); }); }
