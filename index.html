@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<title>Longwood Lodge Winter Assembly</title>
+<meta name="description" content="Top secret // confidential. You have been summoned.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&display=swap">
+<style>
+:root{
+  --night:#04080a; --pine:#0b1f17; --gold:#E9C46A; --gold-2:#F6E2A8; --ink:#FBF6E9; --wax:#8E1B1B;
+  --display:'Cinzel Decorative', serif; --caps:'Cinzel', serif; --body:'Cormorant Garamond', Georgia, serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--night);color:var(--ink);-webkit-font-smoothing:antialiased}
+body{overflow:hidden;height:100vh;height:100svh;font-family:var(--body)}
+.caps{font-family:var(--caps);text-transform:uppercase}
+
+/* ---------- SCENE ---------- */
+#sky{position:fixed;inset:0;background:radial-gradient(120% 70% at 70% 0%, #14313a 0%, #0a1a1f 35%, #05090b 70%, #030506 100%)}
+#stars{position:fixed;inset:0;pointer-events:none}
+.star{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.5;animation:twinkle 3s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.15}50%{opacity:.95}}
+#moon{position:fixed;top:5vh;right:14vw;width:min(15vw,92px);aspect-ratio:1;border-radius:50%;background:transparent;box-shadow:calc(min(15vw,92px) * .3) calc(min(15vw,92px) * -.12) 0 0 #f3e3b3;filter:drop-shadow(0 0 18px rgba(246,226,168,.45)) drop-shadow(0 0 60px rgba(246,226,168,.18))}
+#forest{position:fixed;left:0;right:0;bottom:0;height:46vh;pointer-events:none}
+#forest svg{position:absolute;left:0;bottom:0;width:100%;height:100%}
+.light{animation:blink 2.6s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:.25}50%{opacity:1}}
+#snow{position:fixed;inset:0;pointer-events:none}
+
+/* ---------- SCREENS ---------- */
+.screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top)) 16px max(16px,env(safe-area-inset-bottom));transition:opacity .9s ease, visibility .9s, transform .9s ease}
+.screen.off{opacity:0;visibility:hidden;pointer-events:none}
+
+/* gate */
+.gate{background:rgba(4,10,9,.86)!important;width:min(92vw,400px);text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px;padding:30px 26px 28px;background:rgba(4,10,9,.72);border:1px solid rgba(233,196,106,.55);border-radius:6px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.gate .k{font-size:11px;letter-spacing:4px;color:var(--gold)}
+.gate h1{margin:2px 0 4px;font-family:var(--display);font-weight:700;font-size:36px;letter-spacing:1px;line-height:1.1;color:var(--gold-2)}
+.gate p{margin:0;font-size:19px;font-style:italic;color:#e8e1cf;line-height:1.35}
+.gate input{width:100%;margin-top:8px;padding:14px 16px;background:rgba(0,0,0,.35);border:1px solid rgba(233,196,106,.6);border-radius:3px;color:var(--ink);font-family:var(--caps);font-size:16px;letter-spacing:2px;text-transform:uppercase;text-align:center;outline:none}
+.gate input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(233,196,106,.2)}
+.gate input::placeholder{color:rgba(251,246,233,.4)}
+.btn{min-height:48px;width:100%;padding:13px 18px;border:0;border-radius:3px;background:linear-gradient(180deg,#F3D68B,#D9AE4E);color:#1a1205;font-family:var(--caps);font-weight:600;font-size:14px;letter-spacing:3.5px;text-transform:uppercase;cursor:pointer}
+.btn:disabled{opacity:.6}
+#status{min-height:20px;font-family:var(--caps);font-size:12px;letter-spacing:2.5px;color:var(--gold);text-transform:uppercase}
+
+/* envelope */
+.env-wrap{display:flex;flex-direction:column;align-items:center;transition:opacity .8s ease, transform .8s ease}
+.env-wrap.gone{opacity:0;transform:translateY(40px) scale(.96)}
+.envelope{position:relative;width:min(84vw,360px);aspect-ratio:4/3;perspective:900px}
+.env-back{position:absolute;inset:0;z-index:0;border-radius:6px;background:linear-gradient(170deg,#0c2219,#06120d);border:1px solid rgba(233,196,106,.55);box-shadow:0 30px 80px rgba(0,0,0,.7)}
+.letter-clip{position:absolute;left:0;right:0;bottom:0;top:-160%;z-index:2;overflow:hidden;pointer-events:none}
+.letter,.flyer{border-radius:5px;background:radial-gradient(130% 90% at 50% 0%, #163426 0%, #0a1912 60%, #060e0a 100%);box-shadow:0 10px 30px rgba(0,0,0,.6);overflow:hidden}
+.letter{position:absolute;left:9%;width:82%;bottom:5%;aspect-ratio:1.55/1;transition:transform 1s cubic-bezier(.3,.1,.2,1)}
+.letter::before,.flyer::before{content:"";position:absolute;inset:7px;border:1px solid var(--gold);border-radius:3px}
+.letter::after,.flyer::after{content:"";position:absolute;inset:11px;border:1px solid rgba(233,196,106,.35);border-radius:2px}
+.letter svg,.flyer svg{position:absolute;left:50%;top:12%;width:24%;max-width:90px;transform:translateX(-50%)}
+.letter i,.flyer i{position:absolute;left:24%;right:24%;height:2px;border-radius:2px;background:rgba(233,196,106,.45)}
+.letter.out{transform:translateY(-64%)}
+
+.flyer svg,.flyer i{display:none}
+#fly{position:fixed;inset:0;z-index:20;pointer-events:none;transition:opacity .45s ease}
+#lights{position:absolute;left:0;bottom:0;width:100%;height:100%}
+.pocket{position:absolute;inset:0;z-index:3;border-radius:0 0 6px 6px;overflow:hidden;clip-path:polygon(0 0,50% 60%,100% 0,100% 100%,0 100%);background:linear-gradient(180deg,#123528,#0a2018)}
+.pocket svg,.flap svg{position:absolute;inset:0;width:100%;height:100%}
+.flap{position:absolute;left:0;right:0;top:0;height:64%;z-index:4;transform-origin:50% 0;transition:transform .7s cubic-bezier(.4,.1,.3,1)}
+.flap .fill{position:absolute;inset:0;clip-path:polygon(0 0,100% 0,50% 100%);background:linear-gradient(180deg,#16402f,#0d281d);border-radius:6px 6px 0 0}
+.envelope.open .flap{transform:rotateX(180deg)}
+.envelope.flapback .flap{z-index:1}
+.env-label{position:absolute;left:0;right:0;bottom:9%;z-index:5;text-align:center;font-size:10.5px;letter-spacing:3.5px;color:var(--gold);transition:opacity .4s}
+.envelope.open .env-label{opacity:0}
+.seal{position:absolute;z-index:6;left:50%;top:64%;width:88px;height:88px;transform:translate(-50%,-50%);border:0;padding:0;background:none;cursor:pointer}
+.seal .half{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 35% 30%, #c43a3a, #8E1B1B 55%, #5a0d0d);box-shadow:inset 0 0 0 5px rgba(0,0,0,.12), inset 0 0 0 8px rgba(255,255,255,.06), 0 6px 16px rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;font-size:28px;color:rgba(255,215,190,.55);text-shadow:0 1px 0 rgba(0,0,0,.4);transition:transform .7s cubic-bezier(.3,.1,.2,1), opacity .7s}
+.seal .l{clip-path:polygon(0 0,52% 0,46% 30%,55% 55%,45% 78%,50% 100%,0 100%)}
+.seal .r{clip-path:polygon(52% 0,100% 0,100% 100%,50% 100%,45% 78%,55% 55%,46% 30%)}
+.seal.broken .l{transform:translate(-46px,40px) rotate(-40deg);opacity:0}
+.seal.broken .r{transform:translate(46px,40px) rotate(40deg);opacity:0}
+.tap-seal{margin-top:26px;text-align:center;font-size:12px;letter-spacing:4px;color:var(--gold-2);animation:pulse 2.2s ease-in-out infinite;transition:opacity .4s}
+.tap-seal.hide{opacity:0;animation:none}
+@keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
+
+/* ---------- CARD ---------- */
+.scene3d{perspective:2200px;width:min(92vw,440px,calc((100vh - 32px) / 1.9));width:min(92vw,440px,calc((100svh - 32px) / 1.9));aspect-ratio:1/1.9}
+.card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.3,.1,.2,1);cursor:pointer}
+.card.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;container-type:inline-size;-webkit-backface-visibility:hidden;backface-visibility:hidden;border-radius:8px;overflow:hidden;
+  background:radial-gradient(130% 80% at 50% 0%, #11281f 0%, #08140f 55%, #050c09 100%);
+  box-shadow:0 30px 90px rgba(0,0,0,.75), 0 0 0 1px rgba(233,196,106,.18)}
+.front{transform:rotateY(0deg);visibility:visible;transition:visibility 0s linear .5s}
+.back{transform:rotateY(180deg);visibility:hidden;transition:visibility 0s linear .5s}
+.card.flipped .front{visibility:hidden}
+.card.flipped .back{visibility:visible}
+.frame{position:absolute;inset:3.2cqw;border:1.5px solid var(--gold);border-radius:4px;pointer-events:none;z-index:2}
+.frame::before{content:"";position:absolute;inset:1.4cqw;border:1px solid rgba(233,196,106,.35);border-radius:2px}
+.corner{position:absolute;width:9cqw;height:9cqw;z-index:3;pointer-events:none}
+.corner.tl{top:1.6cqw;left:1.6cqw}.corner.tr{top:1.6cqw;right:1.6cqw;transform:scaleX(-1)}
+.corner.bl{bottom:1.6cqw;left:1.6cqw;transform:scaleY(-1)}.corner.br{bottom:1.6cqw;right:1.6cqw;transform:scale(-1,-1)}
+.treeline{position:absolute;left:3.2cqw;right:3.2cqw;bottom:3.2cqw;height:20cqw;z-index:1;pointer-events:none;border-radius:0 0 4px 4px;overflow:hidden}
+.treeline svg{width:100%;height:100%;display:block}
+
+.inner{position:absolute;inset:4.6cqw;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center}
+.front .inner{padding:9cqw 6cqw 20cqw;justify-content:center}
+.classif{font-size:3cqw;letter-spacing:1cqw;color:var(--gold)}
+.front .classif{position:absolute;top:9cqw;left:0;right:0}
+.classif-sub{margin-top:1.4cqw;font-size:2.3cqw;letter-spacing:.6cqw;color:rgba(251,246,233,.85)}
+.trio{margin-top:0;width:22cqw;height:11cqw;flex-shrink:0}
+.inner > *{flex-shrink:0}
+.eyebrow{margin-top:6cqw;font-size:3cqw;letter-spacing:1cqw;line-height:1.55;color:var(--gold-2)}
+.t1{margin:2.6cqw 0 0;font-family:var(--display);font-weight:700;font-size:7.4cqw;white-space:nowrap;line-height:1.05;color:var(--gold-2);letter-spacing:.2cqw;text-shadow:0 0 6cqw rgba(233,196,106,.25)}
+.t2{margin-top:.8cqw;font-family:var(--body);font-style:italic;font-weight:600;font-size:10cqw;line-height:1;color:var(--ink)}
+.orn{margin-top:7cqw;width:100%;display:flex;align-items:center;gap:3cqw;color:var(--gold)}
+.orn span{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(233,196,106,.85),transparent)}
+.orn svg{width:5cqw;height:5cqw}
+.details{margin-top:7cqw;display:flex;flex-direction:column;align-items:center;gap:4.2cqw}
+.row{display:flex;flex-direction:column;align-items:center;gap:1.2cqw}
+.row .val{margin:0;font-size:5cqw;white-space:nowrap}
+.lbl{font-size:2.8cqw;letter-spacing:.9cqw;color:var(--gold)}
+.details .lbl,.rsvp .caps{font-weight:700}
+.val{margin-top:.8cqw;font-size:5.4cqw;font-weight:600;line-height:1.2;color:var(--ink)}
+.rsvp-btn{margin-top:9cqw;display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:3cqw 12cqw;border-radius:100px;background:linear-gradient(180deg,#F3D68B,#D9AE4E);color:#1a1205;font-family:var(--caps);font-weight:700;font-size:3.6cqw;letter-spacing:1.2cqw;text-decoration:none;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+.rsvp-btn:active{transform:translateY(1px)}
+.rsvp{margin-top:9cqw;font-size:4.2cqw;line-height:1.45;color:#efe8d6}
+.rsvp em{color:var(--gold-2);font-style:italic}
+.rsvp .caps{display:block;margin-bottom:1.4cqw;font-size:2.8cqw;letter-spacing:.9cqw;color:var(--gold)}
+.cta{position:absolute;z-index:4;left:50%;bottom:7.5cqw;transform:translateX(-50%);white-space:nowrap;display:flex;align-items:center;gap:2cqw;padding:2.6cqw 4.6cqw;border:1.5px solid var(--gold);border-radius:100px;background:rgba(5,12,9,.88);color:var(--gold-2);font-family:var(--caps);font-weight:600;font-size:2.9cqw;letter-spacing:.6cqw;text-transform:uppercase;animation:glow 2.6s ease-in-out infinite}
+.cta svg{width:3.6cqw;height:3.6cqw}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(233,196,106,0)}50%{box-shadow:0 0 5cqw .6cqw rgba(233,196,106,.4)}}
+
+/* back */
+.back .inner{inset:6.4cqw;padding:6cqw 4.5cqw 10cqw;align-items:stretch;text-align:left;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;scrollbar-width:none;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 5cqw,#000 calc(100% - 10cqw),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 5cqw,#000 calc(100% - 10cqw),transparent 100%)}
+.back .inner::-webkit-scrollbar{display:none}
+.head{display:flex;flex-direction:column;align-items:center;text-align:center}
+.head h2{margin:2cqw 0 0;font-family:var(--display);font-weight:700;font-size:8.4cqw;line-height:1.1;color:var(--gold-2)}
+.head .sub{margin-top:1.6cqw;font-size:2.5cqw;letter-spacing:.6cqw;color:var(--gold)}
+.art{margin-top:6cqw}
+.art .lbl{display:block;margin-bottom:2cqw}
+.art p{margin:0;font-size:4.9cqw;font-weight:500;line-height:1.38;color:var(--ink)}
+.phrase{font-style:italic;font-weight:600;color:var(--gold-2)}
+.art p.pw{font-size:6.4cqw;line-height:1.25}
+.clauses{display:grid;grid-template-columns:8.5cqw 1fr;row-gap:2.2cqw;font-size:4.9cqw;font-weight:500;line-height:1.36;color:var(--ink)}
+.clauses b{font-family:var(--caps);font-weight:500;font-size:3cqw;color:var(--gold);padding-top:1cqw}
+.disclaimer{margin-top:8cqw;padding-top:5cqw;border-top:1px solid rgba(233,196,106,.35);text-align:center;font-size:4.3cqw;font-style:italic;line-height:1.4;color:#efe8d6}
+.disclaimer .caps{display:block;font-style:normal;font-size:2.7cqw;letter-spacing:.8cqw;color:var(--gold);margin-bottom:1.6cqw}
+.rsvp-back{margin-top:8cqw;padding:5cqw 4cqw;border:1.5px solid var(--gold);border-radius:4px;text-align:center;font-size:4.6cqw;line-height:1.45;color:var(--ink);background:rgba(233,196,106,.06)}
+.rsvp-back .caps{display:block;margin-bottom:2cqw;font-size:2.8cqw;font-weight:700;letter-spacing:.7cqw;color:var(--gold)}
+.rsvp-back em{color:var(--gold-2)}
+.rsvp-back b{font-weight:600;white-space:nowrap}
+.foot{margin-top:6cqw;text-align:center;font-size:2.5cqw;letter-spacing:.5cqw;line-height:1.9;color:rgba(251,246,233,.85)}
+.ret{margin-top:6cqw;text-align:center;font-size:2.8cqw;letter-spacing:.7cqw;color:var(--gold-2)}
+.cue{position:absolute;z-index:4;left:50%;bottom:7.5cqw;transform:translateX(-50%);white-space:nowrap;display:flex;align-items:center;gap:1.6cqw;padding:2.2cqw 4cqw;border:1.5px solid var(--gold);border-radius:100px;background:rgba(5,12,9,.92);box-shadow:0 0 6cqw 4cqw rgba(5,12,9,.85);font-family:var(--caps);font-weight:600;font-size:2.8cqw;letter-spacing:.6cqw;color:var(--gold-2);text-transform:uppercase;pointer-events:none;transition:opacity .4s}
+.cue svg{width:3.8cqw;height:3.8cqw;animation:nudge 1.6s ease-in-out infinite}
+.cue.hide{opacity:0}
+@keyframes nudge{0%,100%{transform:translateY(-.3cqw)}50%{transform:translateY(.8cqw)}}
+
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div id="sky"></div>
+<div id="stars" aria-hidden="true"></div>
+<div id="moon" aria-hidden="true"></div>
+<canvas id="snow" aria-hidden="true"></canvas>
+<div id="forest" aria-hidden="true"></div>
+
+<!-- 1. NAME GATE -->
+<section class="screen" id="screen-gate">
+  <div class="gate">
+    <div class="caps k">Longwood Lodge</div>
+    <h1>Top Secret</h1>
+    <input id="name" type="text" maxlength="30" placeholder="Full name" autocomplete="off" aria-label="Full name">
+    <button class="btn" id="enter" type="button">Enter the woods</button>
+    <div id="status" role="status" aria-live="polite"></div>
+  </div>
+</section>
+
+<!-- 2. SEALED ENVELOPE -->
+<section class="screen off" id="screen-env">
+  <div class="env-wrap" id="env-wrap">
+    <div class="envelope" id="envelope">
+      <div class="env-back"></div>
+      <div class="letter-clip"><div class="letter" id="letter">
+        <svg viewBox="0 0 120 60" aria-hidden="true"><g fill="#E9C46A"><path d="M60 4l14 22h-7l11 16h-8l10 14H40l10-14h-8l11-16h-7z"/></g><g fill="#E9C46A" opacity=".7"><path d="M24 18l10 15h-5l8 11h-6l7 10H10l7-10h-6l8-11h-5z"/><path d="M96 18l10 15h-5l8 11h-6l7 10H82l7-10h-6l8-11h-5z"/></g></svg>
+        <i style="top:50%"></i><i style="top:58%;left:32%;right:32%"></i><i style="top:70%"></i><i style="top:78%;left:30%;right:30%"></i>
+      </div></div>
+      <div class="pocket"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline points="0,0 50,60 100,0" fill="none" stroke="rgba(233,196,106,.45)" stroke-width=".6" vector-effect="non-scaling-stroke"/><polyline points="0,100 50,56 100,100" fill="none" stroke="rgba(233,196,106,.55)" stroke-width=".6" vector-effect="non-scaling-stroke"/></svg></div>
+      <div class="flap"><div class="fill"></div><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline points="0,0 50,100 100,0" fill="none" stroke="rgba(233,196,106,.6)" stroke-width="1" vector-effect="non-scaling-stroke"/></svg></div>
+      <div class="caps env-label" id="env-label">Sealed by order of the Lodge</div>
+      <button class="seal" id="seal" type="button" aria-label="Break the seal">
+        <span class="half l">LL</span><span class="half r">LL</span>
+      </button>
+    </div>
+    <div class="caps tap-seal" id="tap-seal">Tap the seal to break it</div>
+  </div>
+</section>
+
+<!-- 3. THE CARD -->
+<section class="screen off" id="screen-card">
+  <div class="scene3d">
+    <div class="card" id="card" role="button" tabindex="0" aria-label="Invitation. Tap to turn over for the terms.">
+
+      <div class="face front">
+        <div class="frame"></div>
+        <svg class="corner tl" viewBox="0 0 40 40" aria-hidden="true"><path d="M2 38V8a6 6 0 0 1 6-6h30" fill="none" stroke="#E9C46A" stroke-width="1.5"/><path d="M10 22l5-9 5 9h-3l4 7H11l4-7z" fill="#E9C46A"/></svg>
+        <svg class="corner tr" viewBox="0 0 40 40" aria-hidden="true"><path d="M2 38V8a6 6 0 0 1 6-6h30" fill="none" stroke="#E9C46A" stroke-width="1.5"/><path d="M10 22l5-9 5 9h-3l4 7H11l4-7z" fill="#E9C46A"/></svg>
+        <svg class="corner bl" viewBox="0 0 40 40" aria-hidden="true"><path d="M2 38V8a6 6 0 0 1 6-6h30" fill="none" stroke="#E9C46A" stroke-width="1.5"/></svg>
+        <svg class="corner br" viewBox="0 0 40 40" aria-hidden="true"><path d="M2 38V8a6 6 0 0 1 6-6h30" fill="none" stroke="#E9C46A" stroke-width="1.5"/></svg>
+        <div class="inner">
+          <div class="caps classif">Top Secret // Confidential</div>
+          <svg class="trio" viewBox="0 0 120 60" aria-hidden="true">
+            <g fill="#E9C46A"><path d="M60 4l14 22h-7l11 16h-8l10 14H40l10-14h-8l11-16h-7z"/><rect x="57" y="56" width="6" height="4"/></g>
+            <g fill="#E9C46A" opacity=".7"><path d="M24 18l10 15h-5l8 11h-6l7 10H10l7-10h-6l8-11h-5z"/><path d="M96 18l10 15h-5l8 11h-6l7 10H82l7-10h-6l8-11h-5z"/></g>
+            <circle cx="60" cy="3" r="2.6" fill="#fff"/>
+          </svg>
+          <div class="caps eyebrow" id="eyebrow">By invitation only</div>
+          <div class="t1">Longwood Lodge</div>
+          <div class="t2">Winter Assembly</div>
+          <div class="orn"><span></span><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 0l2.2 7.8L20 10l-7.8 2.2L10 20l-2.2-7.8L0 10l7.8-2.2z" fill="#E9C46A"/></svg><span></span></div>
+          <div class="details">
+            <div class="row"><span class="caps lbl">When</span><span class="val">Dec 11 &middot; 8 PM</span></div>
+            <div class="row"><span class="caps lbl">Where</span><span class="val">1324 Longwood St, Apt B</span></div>
+            <div class="row"><span class="caps lbl">Bring</span><span class="val">One gift for the white elephant</span></div>
+          </div>
+        </div>
+        <div class="cta">Turn over to RSVP <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7"/><polyline points="21 3 21 9 15 9"/></svg></div>
+      </div>
+
+      <div class="face back">
+        <div class="frame"></div>
+        <svg class="corner tl" viewBox="0 0 40 40" aria-hidden="true"><path d="M2 38V8a6 6 0 0 1 6-6h30" fill="none" stroke="#E9C46A" stroke-width="1.5"/><path d="M10 22l5-9 5 9h-3l4 7H11l4-7z" fill="#E9C46A"/></svg>
+        <svg class="corner tr" viewBox="0 0 40 40" aria-hidden="true"><path d="M2 38V8a6 6 0 0 1 6-6h30" fill="none" stroke="#E9C46A" stroke-width="1.5"/><path d="M10 22l5-9 5 9h-3l4 7H11l4-7z" fill="#E9C46A"/></svg>
+        <svg class="corner bl" viewBox="0 0 40 40" aria-hidden="true"><path d="M2 38V8a6 6 0 0 1 6-6h30" fill="none" stroke="#E9C46A" stroke-width="1.5"/></svg>
+        <svg class="corner br" viewBox="0 0 40 40" aria-hidden="true"><path d="M2 38V8a6 6 0 0 1 6-6h30" fill="none" stroke="#E9C46A" stroke-width="1.5"/></svg>
+        <div class="inner" id="back-inner">
+          <div class="head">
+            <div class="caps classif">Top Secret // Confidential</div>
+            <h2>Terms &amp; Conditions</h2>
+          </div>
+          <div class="art"><span class="caps lbl">Article I &mdash; Password</span>
+            <p class="phrase pw">&ldquo;The reindeer fly at midnight.&rdquo;</p></div>
+          <div class="art"><span class="caps lbl">Article II &mdash; The Toast</span>
+            <p>At the close of each round of the gift exchange, all attendees present shall take one (1) shot of the liquor provided. A minimum of five (5) shots is required of every attendee.</p></div>
+          <div class="art"><span class="caps lbl">Article III &mdash; Acceptance</span>
+            <p>By submitting an RSVP, the attendee accepts these Terms &amp; Conditions in full and agrees to participate at full capacity for the duration of the Assembly. Acceptance is final, binding and may not be withdrawn once an RSVP has been sent.</p></div>
+          <div class="disclaimer"><span class="caps">Disclaimer</span>The contents of this document shall not be disclosed to spouses, partners, girlfriends or any other party to whom the attendee is legally or emotionally accountable.</div>
+          <div class="rsvp-back"><span class="caps">To RSVP &amp; accept these terms</span>Text <em>&ldquo;I accept responsibility for my actions&rdquo;</em> to <b>541&#8209;706&#8209;0221</b></div>
+          <div class="caps ret">&larr; Tap to turn back</div>
+        </div>
+        <div class="cue" id="cue" aria-hidden="true">Scroll to read <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var NS = 'http://www.w3.org/2000/svg';
+  function rnd(a,b){ return a + Math.random()*(b-a); }
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var dpr = Math.min(window.devicePixelRatio || 1, 2), flying = false;
+
+  // ---------- trees ----------
+  function treePath(x, base, h, w){
+    var t = '', tiers = 3;
+    for (var i = 0; i < tiers; i++){
+      var top = base - h + i*h*0.24, bot = base - h*0.18 - (tiers-1-i)*h*0.2 + (i===tiers-1 ? h*0.06 : 0);
+      var hw = w*(0.42 + i*0.29);
+      t += 'M'+x+' '+top+' L'+(x+hw)+' '+bot+' Q'+x+' '+(bot-h*0.05)+' '+(x-hw)+' '+bot+' Z ';
+    }
+    t += 'M'+(x-w*0.06)+' '+(base-h*0.14)+' h'+(w*0.12)+' v'+(h*0.14)+' h'+(-w*0.12)+' Z';
+    return t;
+  }
+  var COLS = ['#FFD27A','#FF6B5B','#8BE39A','#8CC4FF','#FFD27A'];
+  // bulbs: if an array is given, lights are drawn on a canvas (smooth twinkle); otherwise static svg dots
+  function forest(svg, W, H, layers, bulbs){
+    layers.forEach(function(L){
+      var g = document.createElementNS(NS,'g'), d = '', wires = '';
+      var x = -20;
+      function bulb(bx, by, r, c, glow){
+        if (bulbs){ bulbs.push({x:bx, y:by, r:r, c:c, glow:glow, ph:rnd(0,6.28), sp:rnd(1.8,3.4)}); return; }
+        var e = document.createElementNS(NS,'circle'); e.setAttribute('cx',bx); e.setAttribute('cy',by); e.setAttribute('r',r); e.setAttribute('fill',c); g.appendChild(e);
+      }
+      while (x < W + 40){
+        var h = rnd(L.h[0], L.h[1]) * H, w = h * rnd(.42,.55);
+        var base = H - L.lift*H + rnd(-4,4);
+        d += treePath(x, base, h, w);
+        if (L.star && Math.random() < L.star) bulb(x, base - h - 3, Math.max(1.6, h*0.022), '#F6E2A8');
+        if (L.garland && Math.random() < L.garland){
+          [.34,.6].forEach(function(fr){
+            var y = base - h + fr*h*.95, hw = w*(.25 + fr*.62);
+            var x0 = x - hw, x1 = x + hw, y1 = y + h*.07, cx = x, cy = y + h*.13;
+            wires += 'M'+x0+' '+y+' Q'+cx+' '+cy+' '+x1+' '+y1+' ';
+            var n = Math.max(4, Math.round(hw/7));
+            for (var q = 1; q < n; q++){
+              var t = q/n, bx = (1-t)*(1-t)*x0 + 2*(1-t)*t*cx + t*t*x1, by = (1-t)*(1-t)*y + 2*(1-t)*t*cy + t*t*y1;
+              bulb(bx, by, Math.max(1.7, h*.016), COLS[(q + Math.round(fr*10)) % COLS.length], true);
+            }
+          });
+        }
+        if (L.lights){
+          for (var k = 0; k < L.lights; k++){
+            var ly = base - h*rnd(.2,.8), lx = x + rnd(-1,1) * w * (1 - (base - ly)/h) * .7;
+            bulb(lx, ly, rnd(1,1.8), Math.random() < .7 ? '#F3D68B' : '#e86a5a');
+          }
+        }
+        x += w * rnd(L.gap[0], L.gap[1]);
+      }
+      var p = document.createElementNS(NS,'path'); p.setAttribute('d', d); p.setAttribute('fill', L.fill);
+      g.insertBefore(p, g.firstChild);
+      if (wires){ var wp = document.createElementNS(NS,'path'); wp.setAttribute('d', wires); wp.setAttribute('fill','none'); wp.setAttribute('stroke','rgba(255,230,170,.18)'); wp.setAttribute('stroke-width','.8'); g.appendChild(wp); }
+      svg.appendChild(g);
+    });
+  }
+  function makeSvg(el, W, H){
+    var s = document.createElementNS(NS,'svg');
+    s.setAttribute('viewBox','0 0 '+W+' '+H); s.setAttribute('preserveAspectRatio','xMidYMax slice');
+    el.appendChild(s); return s;
+  }
+  var bulbs = [], FW = 0, FH = 0, lc = null, lctx = null;
+  function buildForest(){
+    var el = document.getElementById('forest'); el.innerHTML = '';
+    FW = window.innerWidth; FH = Math.round(window.innerHeight * .46);
+    var s = makeSvg(el, FW, FH); bulbs = [];
+    var defs = document.createElementNS(NS,'defs');
+    defs.innerHTML = '<linearGradient id="mist" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d2420" stop-opacity="0"/><stop offset="1" stop-color="#0d2420" stop-opacity=".55"/></linearGradient>';
+    s.appendChild(defs);
+    forest(s, FW, FH, [{fill:'#0f2a25', h:[.55,.85], lift:.18, gap:[.5,.8], star:.15}], bulbs);
+    var mist = document.createElementNS(NS,'rect');
+    mist.setAttribute('x',0); mist.setAttribute('y',FH*.35); mist.setAttribute('width',FW); mist.setAttribute('height',FH*.65); mist.setAttribute('fill','url(#mist)');
+    s.appendChild(mist);
+    forest(s, FW, FH, [
+      {fill:'#0a1d18', h:[.5,.75], lift:.08, gap:[.55,.9], star:.25, lights:2, garland:.3},
+      {fill:'#040b09', h:[.4,.62], lift:0, gap:[.6,1], star:.35, lights:3, garland:.55}
+    ], bulbs);
+    lc = document.createElement('canvas'); lc.id = 'lights'; el.appendChild(lc);
+    lc.width = Math.round(FW*dpr); lc.height = Math.round(FH*dpr); lctx = lc.getContext('2d');
+  }
+  function buildCardTrees(){
+    var el = document.getElementById('treeline-front'); if (!el) return;
+    var s = makeSvg(el, 400, 80);
+    forest(s, 400, 80, [
+      {fill:'rgba(233,196,106,.10)', h:[.7,.98], lift:0, gap:[.5,.8]},
+      {fill:'rgba(233,196,106,.18)', h:[.45,.7], lift:0, gap:[.6,1]}
+    ]);
+  }
+
+  // glow sprites, one per colour (drawn once, reused every frame)
+  var sprites = {};
+  function sprite(c){
+    if (sprites[c]) return sprites[c];
+    var cv = document.createElement('canvas'); cv.width = cv.height = 64; var x = cv.getContext('2d');
+    var g = x.createRadialGradient(32,32,0,32,32,32);
+    g.addColorStop(0, hexA(c,.9)); g.addColorStop(.4, hexA(c,.35)); g.addColorStop(1, hexA(c,0));
+    x.fillStyle = g; x.fillRect(0,0,64,64); return (sprites[c] = cv);
+  }
+  function hexA(h, a){ var n = parseInt(h.slice(1),16); return 'rgba('+(n>>16)+','+((n>>8)&255)+','+(n&255)+','+a+')'; }
+
+  // ---------- stars ----------
+  function buildStars(){
+    var box = document.getElementById('stars'); box.innerHTML = '';
+    var n = Math.min(70, Math.round(window.innerWidth * window.innerHeight / 12000));
+    for (var i = 0; i < n; i++){
+      var s = document.createElement('div'); s.className = 'star';
+      s.style.left = rnd(0,100)+'%'; s.style.top = rnd(0,60)+'%';
+      var z = rnd(1,2.4); s.style.width = s.style.height = z+'px';
+      s.style.animationDelay = rnd(0,3)+'s'; s.style.animationDuration = rnd(2.4,4.8)+'s';
+      box.appendChild(s);
+    }
+  }
+
+  // ---------- snow ----------
+  var sc = document.getElementById('snow'), sctx = sc.getContext && sc.getContext('2d'), flakes = [], VW = 0, VH = 0;
+  function sizeSnow(){
+    VW = window.innerWidth; VH = window.innerHeight;
+    sc.width = Math.round(VW*dpr); sc.height = Math.round(VH*dpr); sc.style.width = VW+'px'; sc.style.height = VH+'px';
+    var n = Math.min(90, Math.round(VW*VH/7000)); flakes = [];
+    for (var i = 0; i < n; i++) flakes.push(flake(false));
+  }
+  function flake(top){
+    var s = Math.random() < .8 ? rnd(1,2.3) : rnd(2.3,3.8);
+    return {x:rnd(0,VW), y: top ? -6 : rnd(0,VH), r:s, vy:.3 + s*.28, sw:rnd(0,6.28), ss:rnd(.006,.018), dr:rnd(.3,.9), a:rnd(.45,.95)};
+  }
+
+  // ---------- one loop for snow, lights and sparkles ----------
+  var last = 0;
+  function tick(t){
+    var dt = last ? Math.min((t-last)/16.7, 3) : 1; last = t;
+    if (sctx){
+      sctx.setTransform(dpr,0,0,dpr,0,0); sctx.clearRect(0,0,VW,VH); sctx.fillStyle = '#fff';
+      for (var i = 0; i < flakes.length; i++){
+        var f = flakes[i];
+        if (!reduce){ f.sw += f.ss*dt; f.y += f.vy*dt; f.x += Math.sin(f.sw)*f.dr*.5*dt; if (f.y > VH+6){ flakes[i] = flake(true); continue; } }
+        sctx.globalAlpha = f.a; sctx.beginPath(); sctx.arc(f.x, f.y, f.r, 0, 6.2832); sctx.fill();
+      }
+    }
+    if (lctx && !flying){   // lights hold still during the flight to keep it smooth
+      lctx.setTransform(dpr,0,0,dpr,0,0); lctx.clearRect(0,0,FW,FH);
+      var ts = t/1000;
+      for (var j = 0; j < bulbs.length; j++){
+        var b = bulbs[j], a = reduce ? .8 : .25 + .75 * (.5 + .5*Math.sin(ts*b.sp + b.ph));
+        if (b.glow){ lctx.globalAlpha = a*.55; var R = b.r + 5; lctx.drawImage(sprite(b.c), b.x - R, b.y - R, R*2, R*2); }
+        lctx.globalAlpha = a; lctx.fillStyle = b.c; lctx.beginPath(); lctx.arc(b.x, b.y, b.r, 0, 6.2832); lctx.fill();
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  function layout(){ dpr = Math.min(window.devicePixelRatio || 1, 2); buildForest(); buildStars(); sizeSnow(); updateCue(); }
+
+  // ---------- flow ----------
+  var GUESTS = ['Sam Timms', 'Zach Hamilton', 'Saul Valencia', 'Harry Skordos', 'Kai Ishimi', 'George Faranas', 'Travis Fernamberg', 'Jamie Rennie', 'Stephen Matulis'];
+  function clean(n){ return (n||'').replace(/[-_+]/g,' ').replace(/\s+/g,' ').trim().slice(0,30); }
+  function allowed(n){ n = n.toLowerCase(); return GUESTS.some(function(g){ return clean(g).toLowerCase() === n; }); }
+  function show(id){ ['screen-gate','screen-env','screen-card'].forEach(function(s){ document.getElementById(s).classList.toggle('off', s !== id); }); }
+
+  var input = document.getElementById('name'), btn = document.getElementById('enter'), status = document.getElementById('status');
+  try { var pre = new URLSearchParams(location.search).get('to') || decodeURIComponent((location.hash||'').slice(1)); if (clean(pre)) input.value = clean(pre); } catch(e){}
+
+  function enter(){
+    var name = clean(input.value);
+    if (!name){ status.textContent = 'A name is required.'; input.focus(); return; }
+    btn.disabled = input.disabled = true; status.textContent = 'Consulting the list…';
+    setTimeout(function(){
+      if (!allowed(name)){
+        status.textContent = 'The forest does not know you.';
+        btn.disabled = input.disabled = false; input.select(); return;
+      }
+      status.textContent = 'You may pass.';
+      document.getElementById('eyebrow').textContent = name;
+      document.getElementById('env-label').textContent = 'For the eyes of ' + name + ' only';
+      document.title = 'Longwood Lodge Winter Assembly — for ' + name;
+      setTimeout(function(){ show('screen-env'); }, 900);
+    }, 1500);
+  }
+  btn.addEventListener('click', enter);
+  input.addEventListener('keydown', function(e){ if (e.key === 'Enter'){ e.preventDefault(); enter(); } });
+
+  var seal = document.getElementById('seal'), envEl = document.getElementById('envelope'), letter = document.getElementById('letter');
+  seal.addEventListener('click', function(){
+    if (seal.classList.contains('broken')) return;
+    seal.classList.add('broken');
+    document.getElementById('tap-seal').classList.add('hide');
+    setTimeout(function(){ envEl.classList.add('open'); }, 420);
+    setTimeout(function(){ envEl.classList.add('flapback'); }, 770);
+    setTimeout(flyOut, 1050);
+  });
+
+  // path through a list of points (Catmull-Rom), smooth everywhere
+  function cr(p0, p1, p2, p3, t){ var t2 = t*t, t3 = t2*t;
+    return .5*((2*p1) + (-p0 + p2)*t + (2*p0 - 5*p1 + 4*p2 - p3)*t2 + (-p0 + 3*p1 - 3*p2 + p3)*t3); }
+  function pathAt(P, u){
+    var n = P.length - 1, seg = Math.min(n - 1, Math.floor(u*n)), t = u*n - seg;
+    var a = P[Math.max(0,seg-1)], b = P[seg], c = P[seg+1], d = P[Math.min(n,seg+2)];
+    return {x:cr(a.x,b.x,c.x,d.x,t), y:cr(a.y,b.y,c.y,d.y,t)};
+  }
+  function easeIO(t){ return t < .5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3)/2; }
+  function smooth(a, b, t){ t = Math.min(1, Math.max(0, (t - a)/(b - a))); return t*t*(3 - 2*t); }
+
+  function flyOut(){
+    var from = letter.getBoundingClientRect();
+    var scr = document.getElementById('screen-card'), box = scr.querySelector('.scene3d');
+    var to = box.getBoundingClientRect();
+    var vw = window.innerWidth, vh = window.innerHeight;
+    var S = {x:from.left + from.width/2, y:from.top + from.height/2}, E = {x:to.left + to.width/2, y:to.top + to.height/2};
+    // figure 8 centred on the middle of the screen: up-right into the top loop, round the bottom loop,
+    // up-right again halfway round the top loop, then straight down to the middle
+    var sx0 = from.width/to.width, sy0 = from.height/to.height, sMid = Math.min(.36, 130/to.width);
+    // a true figure 8: two round loops touching at the centre of the screen
+    var C = E, fw = to.width*sMid*.6 + 8, fh = to.height*sMid*.62*.6 + 8;
+    var RAD = Math.max(50, Math.min(vw/2 - fw, (vh - C.y - fh)/2, (C.y - fh)/2, 170));
+    var L1 = 2*Math.PI*RAD, L2 = 2*Math.PI*RAD, L3 = Math.PI*RAD, L4 = 2.4*RAD, LT = L1 + L2 + L3 + L4;
+    function bz(a, b, c, d, t){ var m = 1 - t; return m*m*m*a + 3*m*m*t*b + 3*m*t*t*c + t*t*t*d; }
+    function eightAt(s){
+      var d = s*LT, th;
+      if (d < L1){ th = Math.PI/2 - d/RAD; return {x:C.x + RAD*Math.cos(th), y:C.y - RAD + RAD*Math.sin(th)}; }         // top loop
+      d -= L1;
+      if (d < L2){ th = -Math.PI/2 + d/RAD; return {x:C.x + RAD*Math.cos(th), y:C.y + RAD + RAD*Math.sin(th)}; }        // bottom loop
+      d -= L2;
+      if (d < L3){ th = Math.PI/2 - d/RAD; return {x:C.x + RAD*Math.cos(th), y:C.y - RAD + RAD*Math.sin(th)}; }         // half the top loop
+      var t = (d - L3)/L4, T = {x:C.x, y:C.y - 2*RAD};                                                          // swoop down to the middle
+      return {x:bz(T.x, T.x - RAD*1.15, C.x - RAD*.55, C.x, t), y:bz(T.y, T.y + RAD*.15, C.y - RAD*.9, C.y, t)};
+    }
+
+    // a canvas we draw the letter on every frame, so its edges can bend like paper in the air
+    var cv = document.createElement('canvas'); cv.id = 'fly';
+    var R = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = Math.round(vw*R); cv.height = Math.round(vh*R); cv.style.width = vw+'px'; cv.style.height = vh+'px';
+    document.body.appendChild(cv);
+    var c = cv.getContext('2d');
+    var trees = new Image();
+    trees.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(new XMLSerializer().serializeToString(letter.querySelector('svg')).replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="60"'));
+    letter.style.opacity = '0';
+    var envR = envEl.getBoundingClientRect();
+    // pocket of the envelope in screen space: the letter is drawn behind it while it climbs out
+    var pocket = [[0,0],[.5,.6],[1,0],[1,1],[0,1]].map(function(p){ return [envR.left + p[0]*envR.width, envR.top + p[1]*envR.height]; });
+
+    var PATH_END = .88, D = 8200, t0 = null, envGone = false;
+    function state(raw){
+      var r = Math.min(1, raw / PATH_END), u = (1 - Math.cos(Math.PI*r)) / 2, p;
+      var e8 = eightAt(u), off = 1 - smooth(0, .08, u);                          // glide from the envelope onto the 8
+      p = {x:e8.x + (S.x - C.x)*off, y:e8.y + (S.y - C.y)*off};
+      var ah = eightAt(Math.min(1, u + .004)), bh = eightAt(Math.max(0, u - .004));
+      var vxn = (ah.x - bh.x) / (Math.hypot(ah.x - bh.x, ah.y - bh.y) || 1);             // bank into the turns
+      var g = smooth(.84, 1, r), shrink = smooth(.02, .16, r);
+      var sx = (sx0 + (sMid - sx0)*shrink) * (1 - g) + g, sy = (sy0 + (sMid*.62 - sy0)*shrink) * (1 - g) + g;
+      var w = to.width*sx, h = to.height*sy;
+      if (r > .1 && r < .92){ p.x = Math.min(vw - w*.6 - 6, Math.max(w*.6 + 6, p.x)); p.y = Math.min(vh - h*.6 - 6, Math.max(h*.6 + 6, p.y)); }
+      var fade = r < 1 ? Math.pow(1 - r, .9) * smooth(0, .08, r) : 0;
+      var settle = raw > PATH_END ? Math.exp(-5*(raw - PATH_END)/(1 - PATH_END)) : 1;
+      return {x:p.x, y:p.y, w:w, h:h, rot:(11*vxn + 4*Math.sin(r*Math.PI*3))*fade*Math.PI/180,
+              amp:Math.min(w, h) * (.16*fade + .05*settle*(raw > PATH_END ? 1 : 0)), lift:fade};
+    }
+    // one bent edge from a to b: an S-shaped wave that travels along the paper
+    function edge(ax, ay, bx, by, amp, ph, T){
+      var dx = bx - ax, dy = by - ay, L = Math.sqrt(dx*dx + dy*dy) || 1, nx = -dy/L, ny = dx/L;
+      var o1 = amp * Math.sin(T*2.6 + ph), o2 = amp * Math.sin(T*2.6 + ph + 1.9);
+      c.bezierCurveTo(ax + dx/3 + nx*o1, ay + dy/3 + ny*o1, ax + dx*2/3 + nx*o2, ay + dy*2/3 + ny*o2, bx, by);
+    }
+    function shape(st, inset, T){
+      var hw = st.w/2 - inset, hh = st.h/2 - inset, cs = Math.cos(st.rot), sn = Math.sin(st.rot);
+      // corners drift a little so it looks like it is tilting through the air
+      var tilt = st.amp * .35, k = [
+        [-hw, -hh + tilt*Math.sin(T*2.3)], [hw, -hh - tilt*Math.sin(T*2.3 + .8)],
+        [hw, hh + tilt*Math.sin(T*2.3 + 1.6)], [-hw, hh - tilt*Math.sin(T*2.3 + 2.4)]];
+      var q = k.map(function(v){ return [st.x + v[0]*cs - v[1]*sn, st.y + v[0]*sn + v[1]*cs]; });
+      var a = st.amp * (1 - inset / Math.max(20, Math.min(st.w, st.h)) * .5);
+      c.beginPath(); c.moveTo(q[0][0], q[0][1]);
+      edge(q[0][0], q[0][1], q[1][0], q[1][1], a, 0, T);          // top
+      edge(q[1][0], q[1][1], q[2][0], q[2][1], a*.8, 2.2, T);     // right
+      edge(q[2][0], q[2][1], q[3][0], q[3][1], a, Math.PI, T);    // bottom (mirrors top, like a flag)
+      edge(q[3][0], q[3][1], q[0][0], q[0][1], a*.8, 5.3, T);     // left
+      c.closePath();
+    }
+    function draw(raw){
+      var st = state(raw), T = raw * 6.5;
+      c.setTransform(R,0,0,R,0,0); c.clearRect(0,0,vw,vh);
+      var clipping = raw < .2;
+      if (clipping){
+        c.save(); c.beginPath(); c.rect(0,0,vw,vh);
+        c.moveTo(pocket[0][0], pocket[0][1]); for (var i = 1; i < pocket.length; i++) c.lineTo(pocket[i][0], pocket[i][1]); c.closePath();
+        c.clip('evenodd');
+      }
+      if (!envGone && raw > .16){ envGone = true; document.getElementById('env-wrap').classList.add('gone'); }
+      // cheap shadow: the same shape, offset and dark (no blur, which is slow on phones)
+      c.save(); c.translate(0, 12); shape(st, 0, T); c.fillStyle = 'rgba(0,0,0,.32)'; c.fill(); c.restore();
+      c.save();
+      shape(st, 0, T);
+      var gr = c.createLinearGradient(st.x, st.y - st.h/2, st.x, st.y + st.h/2);
+      gr.addColorStop(0, '#173628'); gr.addColorStop(.6, '#0a1912'); gr.addColorStop(1, '#060e0a');
+      c.fillStyle = gr; c.fill(); c.restore();
+      var s1 = Math.max(3, 7 * Math.min(1, st.w/to.width + .3));
+      shape(st, s1, T); c.strokeStyle = '#E9C46A'; c.lineWidth = 1.2; c.stroke();
+      shape(st, s1 + 4, T); c.strokeStyle = 'rgba(233,196,106,.35)'; c.lineWidth = 1; c.stroke();
+      if (trees.complete && trees.naturalWidth){   // the little gold trees ride along on the paper
+        var tw = Math.min(90, st.w*.24), th = tw/2;
+        c.save(); c.translate(st.x, st.y); c.rotate(st.rot); c.globalAlpha = 1 - smooth(.55, .8, raw);
+        c.drawImage(trees, -tw/2, -st.h/2 + st.h*.12, tw, th); c.restore();
+      }
+      if (clipping) c.restore();
+    }
+    function frame(now){
+      if (t0 === null) t0 = now;
+      var raw = Math.min(1, (now - t0) / D);
+      draw(raw);
+      if (raw < 1) requestAnimationFrame(frame); else land();
+    }
+    function land(){
+      scr.style.transition = 'opacity .45s ease, visibility .45s';
+      scr.classList.remove('off');
+      cv.style.opacity = '0'; flying = false;
+      setTimeout(function(){ cv.remove(); scr.style.transition = ''; updateCue(); }, 500);
+    }
+    if (reduce){ land(); return; }
+    flying = true;
+    requestAnimationFrame(frame);
+  }
+
+  var card = document.getElementById('card');
+  function flip(){ var f = card.classList.toggle('flipped');
+    card.setAttribute('aria-label', f ? 'Terms and conditions. Tap to turn back.' : 'Invitation. Tap to turn over for the terms.'); setTimeout(updateCue, 50); }
+  card.addEventListener('click', flip);
+  card.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); flip(); } });
+
+  var backInner = document.getElementById('back-inner'), cue = document.getElementById('cue');
+  function updateCue(){
+    if (!backInner) return;
+    var more = backInner.scrollHeight - backInner.clientHeight;
+    cue.classList.toggle('hide', more < 10 || backInner.scrollTop > Math.min(80, more*.25));
+  }
+  backInner.addEventListener('scroll', updateCue, {passive:true});
+
+  buildCardTrees(); layout(); requestAnimationFrame(tick);
+  var rt; window.addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(layout, 150); });
+})();
+</script>
+</body>
+</html>
